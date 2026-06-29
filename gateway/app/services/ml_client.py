@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 _RETRY_COUNT = 3
 _RETRY_BASE_DELAY = 0.5  # seconds
-_REQUEST_TIMEOUT = 10.0  # seconds
+_REQUEST_TIMEOUT = 30.0  # seconds (first cold inference can take ~25s)
 
 
 class MLServiceError(Exception):

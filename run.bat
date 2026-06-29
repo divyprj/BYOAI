@@ -1,4 +1,5 @@
 @echo off
+setlocal enabledelayedexpansion
 title BYOAI - Running
 color 0B
 
@@ -11,7 +12,7 @@ echo.
 
 :: Check Docker is running
 docker info >nul 2>&1
-if %errorlevel% neq 0 (
+if !errorlevel! neq 0 (
     color 0E
     echo  [WARNING] Docker Desktop is not running!
     echo  Please start Docker Desktop and try again.
@@ -24,7 +25,7 @@ if %errorlevel% neq 0 (
 echo [1/3] Starting all services...
 echo.
 docker compose up -d
-if %errorlevel% neq 0 (
+if !errorlevel! neq 0 (
     color 0C
     echo.
     echo  [ERROR] Failed to start services! Run repair.bat to fix.
@@ -37,12 +38,11 @@ if %errorlevel% neq 0 (
 echo.
 echo [2/3] Waiting for ML model to load (this takes ~3 minutes on first run)...
 echo.
-set /a attempts=0
-set /a max_attempts=60
+set ATTEMPTS=0
 
 :wait_loop
-set /a attempts+=1
-if %attempts% gtr 60 (
+set /a ATTEMPTS=ATTEMPTS+1
+if !ATTEMPTS! gtr 60 (
     color 0E
     echo.
     echo  [WARNING] Services are taking longer than expected.
@@ -53,10 +53,10 @@ if %attempts% gtr 60 (
     exit /b 1
 )
 
-:: Check if gateway is responding (it only starts after ML service is healthy)
-curl -s -o nul -w "" http://localhost:8000/health >nul 2>&1
-if %errorlevel% neq 0 (
-    echo  Waiting... [%attempts%/%max_attempts%] (checking every 5 seconds)
+:: Check if gateway health endpoint responds (uses PowerShell for reliability)
+powershell -NoProfile -Command "try { $r = Invoke-WebRequest -Uri 'http://localhost:8000/health' -UseBasicParsing -TimeoutSec 3 -ErrorAction Stop; exit 0 } catch { exit 1 }" >nul 2>&1
+if !errorlevel! neq 0 (
+    echo  Waiting... [!ATTEMPTS!/60] ^(checking every 5 seconds^)
     timeout /t 5 /nobreak >nul
     goto wait_loop
 )
@@ -89,3 +89,4 @@ echo Opening Swagger UI in browser...
 start http://localhost:8000/docs
 echo.
 pause
+endlocal

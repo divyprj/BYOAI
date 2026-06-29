@@ -15,7 +15,7 @@ class ChatRequest(BaseModel):
         session_id: Optional session identifier; auto-generated if omitted.
     """
 
-    message: str = Field(..., min_length=1, max_length=4096, description="User chat message")
+    message: str = Field(..., min_length=1, max_length=1000, description="User chat message")
     session_id: str = Field(
         default_factory=lambda: str(uuid4()),
         description="Session identifier (auto-generated UUID4 if not provided)",
