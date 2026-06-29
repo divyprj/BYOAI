@@ -1,0 +1,69 @@
+
+services:
+  gateway:
+    build: ./gateway
+    container_name: byoai-gateway
+    ports:
+      - "8000:8000"
+    environment:
+      - GATEWAY_ML_SERVICE_URL=http://ml-service:8001
+      - GATEWAY_LOG_LEVEL=INFO
+    depends_on:
+      ml-service:
+        condition: service_healthy
+    networks:
+      - byoai-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  ml-service:
+    build: ./ml_service
+    container_name: byoai-ml-service
+    ports:
+      - "8001:8001"
+    environment:
+      - ML_MODEL_NAME=facebook/bart-large-mnli
+      - ML_DEVICE=cpu
+      - ML_LOG_LEVEL=INFO
+      - HF_HOME=/app/.cache/huggingface
+    volumes:
+      - model-cache:/app/.cache/huggingface
+    networks:
+      - byoai-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 300s
+    restart: unless-stopped
+
+  mlflow:
+    build: ./experiments/mlflow
+    container_name: byoai-mlflow
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow-data:/mlflow
+    networks:
+      - byoai-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+networks:
+  byoai-net:
+    driver: bridge
+
+volumes:
+  model-cache:
+  mlflow-data:
