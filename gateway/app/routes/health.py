@@ -29,7 +29,7 @@ _APP_VERSION = "1.0.0"
 async def health_check(request: Request) -> HealthResponse:
     """Return the current health status of the gateway.
 
-    This is a lightweight liveness check — it confirms the service
+    This is a lightweight liveness check - it confirms the service
     is running and responsive without checking downstream dependencies.
     """
     uptime = time.time() - request.app.state.start_time
@@ -52,7 +52,7 @@ async def readiness_check(request: Request) -> HealthResponse:
     """Check readiness by verifying downstream ML service connectivity.
 
     Returns 'healthy' if the ML service is reachable, 'degraded' otherwise.
-    Always returns HTTP 200 — orchestrators should inspect the status field.
+    Always returns HTTP 200 - orchestrators should inspect the status field.
     """
     uptime = time.time() - request.app.state.start_time
     ml_client = MLServiceClient(request.app.state.http_client)

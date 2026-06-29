@@ -18,7 +18,7 @@ RESPONSE_TEMPLATES: dict[str, list[str]] = {
         "Hi there! Thanks for reaching out. What can I assist you with?",
         "Welcome! I'm here to help. What can I do for you today?",
         "Good to see you! How may I assist you today?",
-        "Hello and welcome! I'd love to help — what's on your mind?",
+        "Hello and welcome! I'd love to help - what's on your mind?",
     ],
     "farewell": [
         "Thank you for reaching out! Have a wonderful day.",
@@ -56,14 +56,14 @@ RESPONSE_TEMPLATES: dict[str, list[str]] = {
     "help": [
         "Of course! I'm here to help. What do you need assistance with?",
         "I'd be glad to assist you. Could you tell me more about what you need?",
-        "Absolutely — let me help you with that. What's going on?",
+        "Absolutely - let me help you with that. What's going on?",
         "You've come to the right place! How can I assist you today?",
     ],
     "cancel": [
         "I understand you'd like to cancel. Let me assist you with that process.",
         "I can help you with the cancellation. Could you provide your booking or order details?",
         "I'll help you process that cancellation right away. May I have your reference number?",
-        "No problem — I can handle the cancellation for you. Let me just verify a few details.",
+        "No problem - I can handle the cancellation for you. Let me just verify a few details.",
     ],
     "status_check": [
         "Let me check the status of that for you right away.",
@@ -127,7 +127,7 @@ class ResponseGenerator:
         if not intent_templates:
             logger.warning("No templates found for intent: %s", intent)
             return (
-                "Thank you for your message. I'm here to help — "
+                "Thank you for your message. I'm here to help - "
                 "could you provide a bit more detail?"
             )
 

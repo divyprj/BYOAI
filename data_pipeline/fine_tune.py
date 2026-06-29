@@ -158,7 +158,7 @@ def fine_tune(
         label2id={k: int(v) for k, v in label2id.items()},
     )
     logger.info(
-        "Model loaded — parameters: %s",
+        "Model loaded - parameters: %s",
         f"{sum(p.numel() for p in model.parameters()):,}",
     )
 

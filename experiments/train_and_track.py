@@ -152,7 +152,7 @@ def plot_training_curves(
     ax2.set_ylim(0, 1.05)
     ax2.grid(True, alpha=0.3)
 
-    fig.suptitle("BYOAI Intent Classification — Training Progress", fontsize=15, fontweight="bold", y=1.02)
+    fig.suptitle("BYOAI Intent Classification - Training Progress", fontsize=15, fontweight="bold", y=1.02)
     fig.tight_layout()
     fig.savefig(output_path, dpi=150, bbox_inches="tight")
     plt.close(fig)
@@ -235,7 +235,7 @@ def run_experiment(
 
         # --- Training ---
         if simulate:
-            logger.info("Running in SIMULATION mode — generating dummy metrics")
+            logger.info("Running in SIMULATION mode - generating dummy metrics")
             metrics_per_epoch = generate_simulated_metrics(num_epochs)
         else:
             # Real training integration

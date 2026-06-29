@@ -161,7 +161,7 @@ def plot_confusion_matrix(
     ax.set_xlabel("Predicted Label", fontsize=13, fontweight="bold")
     ax.set_ylabel("True Label", fontsize=13, fontweight="bold")
     ax.set_title(
-        "BYOAI Intent Classification — Confusion Matrix",
+        "BYOAI Intent Classification - Confusion Matrix",
         fontsize=15,
         fontweight="bold",
         pad=15,

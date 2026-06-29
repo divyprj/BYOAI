@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================
-# BYOAI — Quick Demo Script
+# BYOAI - Quick Demo Script
 # ============================================================
 # Walks through the full API workflow with curl commands.
 # Usage: bash scripts/demo.sh [BASE_URL]
@@ -46,7 +46,7 @@ step() {
 # --- Banner ------------------------------------------------
 echo ""
 echo -e "${CYAN}╔══════════════════════════════════════════════════════════════╗${NC}"
-echo -e "${CYAN}║${NC}${BOLD}            🤖 BYOAI — Conversational AI Demo               ${NC}${CYAN}║${NC}"
+echo -e "${CYAN}║${NC}${BOLD}            🤖 BYOAI - Conversational AI Demo               ${NC}${CYAN}║${NC}"
 echo -e "${CYAN}║${NC}     Conversational Automation with Intent Classification     ${CYAN}║${NC}"
 echo -e "${CYAN}║${NC}                                                              ${CYAN}║${NC}"
 echo -e "${CYAN}║${NC}  Gateway: ${GREEN}${BASE_URL}${NC}                            ${CYAN}║${NC}"
@@ -56,7 +56,7 @@ echo -e "${CYAN}╚════════════════════�
 # ===========================================================
 # 1. Health Check
 # ===========================================================
-banner "Step 1 — Health Check"
+banner "Step 1 - Health Check"
 step "Checking if the gateway is alive..." \
      "curl ${BASE_URL}/health"
 
@@ -66,7 +66,7 @@ pretty_print "$RESPONSE"
 # ===========================================================
 # 2. Readiness Check
 # ===========================================================
-banner "Step 2 — Readiness Check (ML Service Connectivity)"
+banner "Step 2 - Readiness Check (ML Service Connectivity)"
 step "Verifying the ML service is connected and model is loaded..." \
      "curl ${BASE_URL}/health/ready"
 
@@ -76,7 +76,7 @@ pretty_print "$RESPONSE"
 # ===========================================================
 # 3. Send a Greeting
 # ===========================================================
-banner "Step 3 — Chat: Greeting"
+banner "Step 3 - Chat: Greeting"
 step "Sending a friendly greeting message..." \
      "POST ${BASE_URL}/api/v1/chat"
 
@@ -90,7 +90,7 @@ sleep 1
 # ===========================================================
 # 4. Send a Complaint
 # ===========================================================
-banner "Step 4 — Chat: Complaint"
+banner "Step 4 - Chat: Complaint"
 step "Sending a customer complaint..." \
      "POST ${BASE_URL}/api/v1/chat"
 
@@ -104,7 +104,7 @@ sleep 1
 # ===========================================================
 # 5. Send a Booking Request
 # ===========================================================
-banner "Step 5 — Chat: Booking Request"
+banner "Step 5 - Chat: Booking Request"
 step "Sending a booking/reservation request..." \
      "POST ${BASE_URL}/api/v1/chat"
 
@@ -118,7 +118,7 @@ sleep 1
 # ===========================================================
 # 6. View Conversation History
 # ===========================================================
-banner "Step 6 — Conversation History"
+banner "Step 6 - Conversation History"
 step "Retrieving the full conversation history for this session..." \
      "GET ${BASE_URL}/api/v1/history/${SESSION_ID}"
 
@@ -128,7 +128,7 @@ pretty_print "$RESPONSE"
 # ===========================================================
 # 7. Clear Conversation History
 # ===========================================================
-banner "Step 7 — Clear History"
+banner "Step 7 - Clear History"
 step "Clearing the conversation history..." \
      "DELETE ${BASE_URL}/api/v1/history/${SESSION_ID}"
 
@@ -138,7 +138,7 @@ pretty_print "$RESPONSE"
 # ===========================================================
 # 8. Verify History is Cleared
 # ===========================================================
-banner "Step 8 — Verify Cleared"
+banner "Step 8 - Verify Cleared"
 step "Confirming the history is empty..." \
      "GET ${BASE_URL}/api/v1/history/${SESSION_ID}"
 

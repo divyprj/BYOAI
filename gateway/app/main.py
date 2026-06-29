@@ -1,4 +1,4 @@
-"""BYOAI API Gateway — FastAPI application entrypoint.
+"""BYOAI API Gateway - FastAPI application entrypoint.
 
 Sets up the FastAPI application with:
 - Lifespan-managed httpx.AsyncClient for downstream calls
@@ -83,7 +83,7 @@ app = FastAPI(
 # Middleware
 # ---------------------------------------------------------------------------
 
-# CORS — permissive for demo; tighten in production
+# CORS - permissive for demo; tighten in production
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

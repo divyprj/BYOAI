@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-BYOAI — End-to-End API Integration Test Suite
+BYOAI - End-to-End API Integration Test Suite
 ==============================================
 
 Runs a comprehensive test sequence against the running BYOAI gateway
@@ -74,7 +74,7 @@ class TestSuite:
         """Run all tests in sequence and return True if all passed."""
         print()
         print(colored("╔══════════════════════════════════════════════════════════════╗", Colors.CYAN))
-        print(colored("║", Colors.CYAN) + colored("         🧪 BYOAI — Integration Test Suite                  ", Colors.BOLD) + colored("║", Colors.CYAN))
+        print(colored("║", Colors.CYAN) + colored("         🧪 BYOAI - Integration Test Suite                  ", Colors.BOLD) + colored("║", Colors.CYAN))
         print(colored("║", Colors.CYAN) + f"  Target: {colored(self.base_url, Colors.GREEN)}                            " + colored("║", Colors.CYAN))
         print(colored("╚══════════════════════════════════════════════════════════════╝", Colors.CYAN))
 
@@ -124,7 +124,7 @@ class TestSuite:
 
     def test_health_check(self) -> None:
         """Test 1: Gateway health endpoint."""
-        print_header("Test 1 — Gateway Health Check")
+        print_header("Test 1 - Gateway Health Check")
         resp = self._request("GET", "/health")
         if resp is None:
             self._add_result("Gateway /health returns 200", False, "Connection failed")
@@ -136,7 +136,7 @@ class TestSuite:
 
     def test_readiness_check(self) -> None:
         """Test 2: Gateway readiness (ML service connectivity)."""
-        print_header("Test 2 — Readiness Check (ML Connectivity)")
+        print_header("Test 2 - Readiness Check (ML Connectivity)")
         resp = self._request("GET", "/health/ready")
         if resp is None:
             self._add_result("Gateway /health/ready returns 200", False, "Connection failed")
@@ -148,7 +148,7 @@ class TestSuite:
 
     def test_chat_greeting(self) -> None:
         """Test 3: Send a greeting, expect intent=greeting."""
-        print_header("Test 3 — Chat: Greeting → intent=greeting")
+        print_header("Test 3 - Chat: Greeting → intent=greeting")
         resp = self._request("POST", "/api/v1/chat", json_body={
             "message": "Hello! How are you doing today?",
             "session_id": self.session_id,
@@ -166,7 +166,7 @@ class TestSuite:
 
     def test_chat_complaint(self) -> None:
         """Test 4: Send a complaint, expect intent=complaint."""
-        print_header("Test 4 — Chat: Complaint → intent=complaint")
+        print_header("Test 4 - Chat: Complaint → intent=complaint")
         resp = self._request("POST", "/api/v1/chat", json_body={
             "message": "I am very unhappy with your service. My order arrived completely damaged and broken.",
             "session_id": self.session_id,
@@ -184,7 +184,7 @@ class TestSuite:
 
     def test_chat_booking(self) -> None:
         """Test 5: Send a booking request, expect intent=booking."""
-        print_header("Test 5 — Chat: Booking → intent=booking")
+        print_header("Test 5 - Chat: Booking → intent=booking")
         resp = self._request("POST", "/api/v1/chat", json_body={
             "message": "I would like to book an appointment for next Tuesday at 3 PM.",
             "session_id": self.session_id,
@@ -202,7 +202,7 @@ class TestSuite:
 
     def test_conversation_history(self) -> None:
         """Test 6: Check conversation history contains previous messages."""
-        print_header("Test 6 — Conversation History")
+        print_header("Test 6 - Conversation History")
         resp = self._request("GET", f"/api/v1/history/{self.session_id}")
         if resp is None:
             self._add_result("History returns previous messages", False, "Connection failed")
@@ -219,7 +219,7 @@ class TestSuite:
 
     def test_chat_out_of_scope(self) -> None:
         """Test 7: Send an out-of-scope message."""
-        print_header("Test 7 — Chat: Out-of-Scope Message")
+        print_header("Test 7 - Chat: Out-of-Scope Message")
         resp = self._request("POST", "/api/v1/chat", json_body={
             "message": "What is the square root of negative one in a parallel universe?",
             "session_id": self.session_id,
@@ -230,13 +230,13 @@ class TestSuite:
 
         data = resp.json()
         print(colored(f"    {pretty_json(data)}", Colors.DIM))
-        # Should return 200 regardless — the system handles everything gracefully
+        # Should return 200 regardless - the system handles everything gracefully
         passed = resp.status_code == 200 and "intent" in data
         self._add_result("Out-of-scope handled gracefully", passed)
 
     def test_clear_history(self) -> None:
         """Test 8: Clear conversation history."""
-        print_header("Test 8 — Clear Conversation History")
+        print_header("Test 8 - Clear Conversation History")
         resp = self._request("DELETE", f"/api/v1/history/{self.session_id}")
         if resp is None:
             self._add_result("History cleared successfully", False, "Connection failed")
@@ -249,7 +249,7 @@ class TestSuite:
 
     def test_history_cleared(self) -> None:
         """Test 9: Verify history is empty after clearing."""
-        print_header("Test 9 — Verify History is Empty")
+        print_header("Test 9 - Verify History is Empty")
         resp = self._request("GET", f"/api/v1/history/{self.session_id}")
         if resp is None:
             self._add_result("History is empty after clear", False, "Connection failed")
@@ -295,7 +295,7 @@ class TestSuite:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="BYOAI — End-to-End API Integration Test Suite",
+        description="BYOAI - End-to-End API Integration Test Suite",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:

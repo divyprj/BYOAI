@@ -202,7 +202,7 @@ def stratified_split(
         random_state=random_state,
     )
 
-    logger.info("Split sizes — train: %d, val: %d, test: %d", len(train_df), len(val_df), len(test_df))
+    logger.info("Split sizes - train: %d, val: %d, test: %d", len(train_df), len(val_df), len(test_df))
     return train_df, val_df, test_df
 
 

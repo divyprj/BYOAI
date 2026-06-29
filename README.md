@@ -1,5 +1,5 @@
 <p align="center">
-  <h1 align="center">🤖 BYOAI — Conversational AI Automation System</h1>
+  <h1 align="center">🤖 BYOAI - Conversational AI Automation System</h1>
   <p align="center">
     A production-grade microservices architecture for conversational AI with intent classification, experiment tracking, and containerized deployment.
   </p>
@@ -37,17 +37,17 @@
 
 ## 🌟 Overview
 
-**BYOAI** (Build Your Own AI) is an end-to-end conversational automation system designed to demonstrate modern ML engineering practices. It processes natural language messages, classifies user intent using a zero-shot transformer model, and generates contextual responses — all within a fully containerized microservices architecture.
+**BYOAI** (Build Your Own AI) is an end-to-end conversational automation system designed to demonstrate modern ML engineering practices. It processes natural language messages, classifies user intent using a zero-shot transformer model, and generates contextual responses - all within a fully containerized microservices architecture.
 
 ### Key Features
 
-- 🧠 **Zero-Shot Intent Classification** — Uses `facebook/bart-large-mnli` for accurate intent detection without task-specific training data
-- 🏗️ **Microservices Architecture** — Independently deployable API gateway and ML model server
-- 📊 **Experiment Tracking** — Full MLflow integration for logging metrics, parameters, and model artifacts
-- 🔄 **Data Pipeline** — Preprocessing, tokenization, and fine-tuning scripts for model customization
-- 🐳 **One-Command Deployment** — Docker Compose with health checks, networking, and volume management
-- 🔒 **Production Patterns** — Rate limiting, structured logging, circuit breaker, and graceful error handling
-- 📖 **Auto-Generated API Docs** — Interactive Swagger UI via FastAPI's built-in OpenAPI support
+- 🧠 **Zero-Shot Intent Classification** - Uses `facebook/bart-large-mnli` for accurate intent detection without task-specific training data
+- 🏗️ **Microservices Architecture** - Independently deployable API gateway and ML model server
+- 📊 **Experiment Tracking** - Full MLflow integration for logging metrics, parameters, and model artifacts
+- 🔄 **Data Pipeline** - Preprocessing, tokenization, and fine-tuning scripts for model customization
+- 🐳 **One-Command Deployment** - Docker Compose with health checks, networking, and volume management
+- 🔒 **Production Patterns** - Rate limiting, structured logging, circuit breaker, and graceful error handling
+- 📖 **Auto-Generated API Docs** - Interactive Swagger UI via FastAPI's built-in OpenAPI support
 
 ---
 
@@ -58,21 +58,21 @@ graph TB
     subgraph "Docker Compose Network"
         Client["Client / curl / UI"]
         
-        subgraph "Service 1 — API Gateway :8000"
+        subgraph "Service 1 - API Gateway :8000"
             GW["FastAPI Gateway"]
             Auth["Auth Middleware"]
             RateLimit["Rate Limiter"]
             ConvMgr["Conversation Manager"]
         end
 
-        subgraph "Service 2 — ML Model Server :8001"
+        subgraph "Service 2 - ML Model Server :8001"
             ML["FastAPI ML Server"]
             IntentClassifier["Intent Classifier<br/>(BART-MNLI)"]
             ResponseGen["Response Generator"]
             ModelCache["Model Cache"]
         end
 
-        subgraph "Service 3 — MLflow Tracking :5000"
+        subgraph "Service 3 - MLflow Tracking :5000"
             MLflow["MLflow Server"]
             ArtifactStore["Artifact Store"]
         end
@@ -91,7 +91,7 @@ graph TB
 | Decision | Rationale |
 |---|---|
 | **FastAPI for both services** | Async support, auto OpenAPI docs, type safety with Pydantic, best-in-class Python performance |
-| **BART-MNLI for intent classification** | Zero-shot capability — works out-of-the-box without training data, strong accuracy on diverse intents |
+| **BART-MNLI for intent classification** | Zero-shot capability - works out-of-the-box without training data, strong accuracy on diverse intents |
 | **Separate ML service** | Independent scaling, model hot-swap without gateway downtime, GPU isolation when needed |
 | **MLflow as a 3rd service** | Centralized experiment tracking, model registry, reproducibility across team |
 | **Docker Compose networking** | Service discovery via DNS, isolated networking, single-command deploy |
@@ -129,7 +129,7 @@ graph TB
 docker compose up --build
 ```
 
-> **⏱ First run** takes 3–5 minutes — the ML service downloads the BART-MNLI model (~1.6 GB). Subsequent starts use the cached model via Docker volumes.
+> **⏱ First run** takes 3-5 minutes - the ML service downloads the BART-MNLI model (~1.6 GB). Subsequent starts use the cached model via Docker volumes.
 
 ### What to Expect
 
@@ -264,7 +264,7 @@ curl http://localhost:8000/health
 
 ### `GET /health/ready`
 
-Gateway readiness check — verifies ML service connectivity.
+Gateway readiness check - verifies ML service connectivity.
 
 **Request:**
 ```bash
@@ -592,33 +592,33 @@ BYOAI/
 
 ### Why Separate Services?
 
-- **Independent Scaling** — ML inference is CPU/GPU-intensive; scale it independently from the lightweight gateway
-- **Model Hot-Swap** — Update the ML model without any gateway downtime
-- **Technology Flexibility** — ML service could be rewritten in a different framework (e.g., TorchServe, Triton) without affecting the gateway
-- **GPU Isolation** — When GPU support is added, only the ML service container needs GPU access
+- **Independent Scaling** - ML inference is CPU/GPU-intensive; scale it independently from the lightweight gateway
+- **Model Hot-Swap** - Update the ML model without any gateway downtime
+- **Technology Flexibility** - ML service could be rewritten in a different framework (e.g., TorchServe, Triton) without affecting the gateway
+- **GPU Isolation** - When GPU support is added, only the ML service container needs GPU access
 
 ### Why FastAPI?
 
-- **Performance** — Among the fastest Python web frameworks (on par with Node.js/Go for I/O-bound workloads)
-- **Type Safety** — Pydantic integration catches data issues at the boundary
-- **Auto Documentation** — Swagger UI and ReDoc generated automatically from type annotations
-- **Async Support** — Native `async/await` for non-blocking I/O (critical for the gateway's HTTP client calls)
+- **Performance** - Among the fastest Python web frameworks (on par with Node.js/Go for I/O-bound workloads)
+- **Type Safety** - Pydantic integration catches data issues at the boundary
+- **Auto Documentation** - Swagger UI and ReDoc generated automatically from type annotations
+- **Async Support** - Native `async/await` for non-blocking I/O (critical for the gateway's HTTP client calls)
 
 ---
 
 ## 🔮 Future Improvements
 
-- [ ] **Redis/PostgreSQL** — Persistent conversation storage with session expiry
-- [ ] **Authentication & API Keys** — JWT-based auth with API key management
-- [ ] **GPU Support** — NVIDIA Container Toolkit integration for GPU-accelerated inference
-- [ ] **CI/CD Pipeline** — GitHub Actions for automated testing, building, and deployment
-- [ ] **Kubernetes Deployment** — Helm charts for production-grade orchestration
-- [ ] **Prometheus + Grafana** — Metrics collection and monitoring dashboards
-- [ ] **WebSocket Support** — Real-time streaming responses
-- [ ] **Model A/B Testing** — Canary deployments with traffic splitting
-- [ ] **Response Caching** — Redis-based caching for identical queries
-- [ ] **Multi-language Support** — Multilingual intent classification models
-- [ ] **Frontend UI** — React/Next.js chat interface
+- [ ] **Redis/PostgreSQL** - Persistent conversation storage with session expiry
+- [ ] **Authentication & API Keys** - JWT-based auth with API key management
+- [ ] **GPU Support** - NVIDIA Container Toolkit integration for GPU-accelerated inference
+- [ ] **CI/CD Pipeline** - GitHub Actions for automated testing, building, and deployment
+- [ ] **Kubernetes Deployment** - Helm charts for production-grade orchestration
+- [ ] **Prometheus + Grafana** - Metrics collection and monitoring dashboards
+- [ ] **WebSocket Support** - Real-time streaming responses
+- [ ] **Model A/B Testing** - Canary deployments with traffic splitting
+- [ ] **Response Caching** - Redis-based caching for identical queries
+- [ ] **Multi-language Support** - Multilingual intent classification models
+- [ ] **Frontend UI** - React/Next.js chat interface
 
 ---
 
@@ -628,16 +628,16 @@ BYOAI/
 
 ### Demo Talking Points
 
-1. **Architecture Overview** — Show the `docker-compose.yml` and explain the 3-service design
-2. **One-Command Deploy** — Run `docker compose up --build` and watch services come online
-3. **Health Checks** — Demonstrate health and readiness endpoints
-4. **Live Chat Demo** — Send various messages (greeting, complaint, booking) and show intent classification
-5. **Conversation History** — Show session management with history retrieval and clearing
-6. **Swagger UI** — Walk through the auto-generated API documentation at `/docs`
-7. **MLflow Dashboard** — Show experiment tracking at `localhost:5000`
-8. **Data Pipeline** — Run preprocessing and demonstrate the fine-tuning workflow
-9. **Code Walkthrough** — Highlight key architectural patterns (circuit breaker, rate limiter, zero-shot pipeline)
-10. **Future Roadmap** — Discuss production scaling with Kubernetes, GPU support, and CI/CD
+1. **Architecture Overview** - Show the `docker-compose.yml` and explain the 3-service design
+2. **One-Command Deploy** - Run `docker compose up --build` and watch services come online
+3. **Health Checks** - Demonstrate health and readiness endpoints
+4. **Live Chat Demo** - Send various messages (greeting, complaint, booking) and show intent classification
+5. **Conversation History** - Show session management with history retrieval and clearing
+6. **Swagger UI** - Walk through the auto-generated API documentation at `/docs`
+7. **MLflow Dashboard** - Show experiment tracking at `localhost:5000`
+8. **Data Pipeline** - Run preprocessing and demonstrate the fine-tuning workflow
+9. **Code Walkthrough** - Highlight key architectural patterns (circuit breaker, rate limiter, zero-shot pipeline)
+10. **Future Roadmap** - Discuss production scaling with Kubernetes, GPU support, and CI/CD
 
 ### Quick Demo Commands
 
