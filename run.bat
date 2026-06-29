@@ -10,18 +10,51 @@ echo    STARTING SERVICES
 echo  ============================================
 echo.
 
-:: Check Docker is running
+:: Step 0: Pull latest code from GitHub
+echo [0/4] Updating repository from GitHub...
+git pull 2>nul
+if !errorlevel! equ 0 (
+    echo  [OK] Repository is up to date.
+) else (
+    echo  [SKIP] Git not available or not a repo - continuing...
+)
+echo.
+
+:: Step 1: Check if Docker is running, if not start it
+echo [1/4] Checking Docker Desktop...
 docker info >nul 2>&1
 if !errorlevel! neq 0 (
-    color 0E
-    echo  [WARNING] Docker Desktop is not running!
-    echo  Please start Docker Desktop and try again.
-    echo.
-    pause
-    exit /b 1
+    echo  Docker Desktop is not running. Starting it now...
+    start "" "C:\Program Files\Docker\Docker\Docker Desktop.exe" 2>nul
+    if !errorlevel! neq 0 (
+        start "" "%LOCALAPPDATA%\Docker\Docker Desktop.exe" 2>nul
+    )
+    echo  Waiting for Docker to start...
+    set DOCKER_WAIT=0
+    :docker_wait
+    set /a DOCKER_WAIT=DOCKER_WAIT+1
+    if !DOCKER_WAIT! gtr 60 (
+        color 0C
+        echo.
+        echo  [ERROR] Docker Desktop failed to start after 5 minutes!
+        echo  Please start Docker Desktop manually and run this script again.
+        echo.
+        pause
+        exit /b 1
+    )
+    timeout /t 5 /nobreak >nul
+    docker info >nul 2>&1
+    if !errorlevel! neq 0 (
+        echo  Waiting for Docker... [!DOCKER_WAIT!/60]
+        goto docker_wait
+    )
+    echo  [OK] Docker Desktop is now running!
+) else (
+    echo  [OK] Docker Desktop is already running.
 )
+echo.
 
-:: Device selection menu
+:: Step 2: Device selection menu
 echo  Select compute device for ML inference:
 echo.
 echo    [1] CPU        (Default - works everywhere, ~2s per request)
@@ -51,16 +84,16 @@ if "!DEVICE_CHOICE!"=="2" (
 )
 echo.
 
-:: Start services based on device choice
-echo [1/3] Starting all services...
+:: Step 3: Build and start services
+echo [2/4] Starting all services...
 echo.
 
 if "!DEVICE_CHOICE!"=="2" (
     echo  Mode: NVIDIA GPU
-    docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d
+    docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d --build
 ) else (
     echo  Mode: CPU
-    docker compose up -d
+    docker compose up -d --build
 )
 
 if !errorlevel! neq 0 (
@@ -72,12 +105,12 @@ if !errorlevel! neq 0 (
     exit /b 1
 )
 
-:: Wait for ML model to load
+:: Step 4: Wait for ML model to load
 echo.
 if "!DEVICE_CHOICE!"=="2" (
-    echo [2/3] Waiting for ML model to load on GPU...
+    echo [3/4] Waiting for ML model to load on GPU...
 ) else (
-    echo [2/3] Waiting for ML model to load (this takes ~3 minutes on first run)...
+    echo [3/4] Waiting for ML model to load (this takes ~3 minutes on first run)...
 )
 echo.
 set ATTEMPTS=0
@@ -108,7 +141,7 @@ echo  [OK] All services are healthy!
 echo.
 
 :: Show status
-echo [3/3] Service Status:
+echo [4/4] Service Status:
 echo.
 if "!DEVICE_CHOICE!"=="2" (
     docker compose -f docker-compose.yml -f docker-compose.gpu.yml ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
@@ -135,9 +168,11 @@ echo.
 echo  To stop:  docker compose down
 echo.
 
-:: Open browser
-echo Opening Swagger UI in browser...
+:: Open all browser tabs
+echo Opening all services in browser...
 start http://localhost:8000/docs
+start http://localhost:8001/docs
+start http://localhost:5000
 echo.
 pause
 endlocal
