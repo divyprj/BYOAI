@@ -120,16 +120,62 @@ graph TB
 
 ### Prerequisites
 
-- [Docker](https://docs.docker.com/get-docker/) ≥ 20.10
-- [Docker Compose](https://docs.docker.com/compose/install/) ≥ 2.0
+- [Docker](https://docs.docker.com/get-docker/) >= 20.10
+- [Docker Compose](https://docs.docker.com/compose/install/) >= 2.0
+- [Git](https://git-scm.com/) (for auto-update feature)
+- (Optional) NVIDIA GPU + drivers for GPU-accelerated inference
 
-### One-Liner Deploy
+### Windows - One-Click Setup (Recommended)
+
+The project includes automation scripts that handle everything for you:
+
+| Script | Description |
+|--------|-------------|
+| **`run.bat`** | Full auto-start: pulls latest code from GitHub, starts Docker Desktop if not running, lets you choose CPU or GPU mode, builds & starts all containers, waits for health checks, and opens all browser UIs |
+| **`install.bat`** | Verifies Docker & Docker Compose are installed, builds all Docker images from scratch |
+| **`repair.bat`** | Stops everything, removes old images/volumes, rebuilds from scratch with `--no-cache`, then restarts |
+| **`uninstall.bat`** | Full cleanup: stops containers, removes images, deletes volumes (model cache, mlflow data), prunes dangling resources |
+
+```powershell
+# Clone the repository
+git clone https://github.com/divyprj/BYOAI.git
+cd BYOAI
+
+# Run everything with a single double-click or:
+.\run.bat
+```
+
+`run.bat` will:
+1. Pull the latest code from GitHub
+2. Start Docker Desktop automatically (if not already running)
+3. Ask you to choose **CPU** or **NVIDIA GPU** mode
+4. Build and start all 3 microservice containers
+5. Wait for the ML model to load and become healthy
+6. Open **Gateway Swagger UI**, **ML Service Swagger UI**, and **MLflow Dashboard** in your browser
+
+> **First run** takes 3-5 minutes as the ML service downloads the BART-MNLI model (~1.6 GB). Subsequent starts use the cached model via Docker volumes.
+
+### Linux / macOS - Docker Compose
 
 ```bash
+git clone https://github.com/divyprj/BYOAI.git
+cd BYOAI
 docker compose up --build
 ```
 
-> **⏱ First run** takes 3-5 minutes - the ML service downloads the BART-MNLI model (~1.6 GB). Subsequent starts use the cached model via Docker volumes.
+### GPU Mode (Optional)
+
+If you have an NVIDIA GPU and want faster inference (~0.05s vs ~2s per request):
+
+```bash
+# Linux / macOS
+docker compose -f docker-compose.yml -f docker-compose.gpu.yml up --build
+
+# Windows
+.\run.bat    # then select option [2] for GPU
+```
+
+> Requires NVIDIA drivers, Docker with WSL2 backend (Windows), and the NVIDIA Container Toolkit.
 
 ### What to Expect
 
@@ -150,9 +196,6 @@ Once all services are healthy:
 curl -s -X POST http://localhost:8000/api/v1/chat \
   -H "Content-Type: application/json" \
   -d '{"message": "Hello! How are you?", "session_id": "demo"}' | python -m json.tool
-
-# Run the full demo
-bash scripts/demo.sh
 
 # Run integration tests
 pip install httpx
@@ -499,9 +542,15 @@ bash scripts/demo.sh
 ```
 BYOAI/
 ├── README.md                        # This file
-├── docker-compose.yml               # Multi-service orchestration
+├── docker-compose.yml               # Multi-service orchestration (CPU)
+├── docker-compose.gpu.yml           # GPU override (NVIDIA CUDA)
 ├── .env.example                     # Environment variable template
 ├── .gitignore                       # Git ignore rules
+│
+├── run.bat                          # One-click start (auto Docker, GPU/CPU, browser)
+├── install.bat                      # Build all Docker images
+├── repair.bat                       # Full rebuild (no-cache)
+├── uninstall.bat                    # Complete cleanup
 │
 ├── gateway/                         # Service 1: API Gateway (:8000)
 │   ├── Dockerfile
@@ -528,8 +577,10 @@ BYOAI/
 │       └── test_gateway.py          # Unit tests
 │
 ├── ml_service/                      # Service 2: ML Model Server (:8001)
-│   ├── Dockerfile
-│   ├── requirements.txt
+│   ├── Dockerfile                   # CPU image (python:3.11-slim)
+│   ├── Dockerfile.gpu               # GPU image (nvidia/cuda + Python)
+│   ├── requirements.txt             # CPU dependencies
+│   ├── requirements.gpu.txt         # GPU dependencies (PyTorch + CUDA)
 │   ├── app/
 │   │   ├── __init__.py
 │   │   ├── main.py                  # FastAPI app
@@ -610,7 +661,7 @@ BYOAI/
 
 - [ ] **Redis/PostgreSQL** - Persistent conversation storage with session expiry
 - [ ] **Authentication & API Keys** - JWT-based auth with API key management
-- [ ] **GPU Support** - NVIDIA Container Toolkit integration for GPU-accelerated inference
+- [x] **GPU Support** - NVIDIA CUDA integration with `docker-compose.gpu.yml` for GPU-accelerated inference
 - [ ] **CI/CD Pipeline** - GitHub Actions for automated testing, building, and deployment
 - [ ] **Kubernetes Deployment** - Helm charts for production-grade orchestration
 - [ ] **Prometheus + Grafana** - Metrics collection and monitoring dashboards
