@@ -42,7 +42,7 @@ set /a max_attempts=60
 
 :wait_loop
 set /a attempts+=1
-if %attempts% gtr %max_attempts% (
+if %attempts% gtr 60 (
     color 0E
     echo.
     echo  [WARNING] Services are taking longer than expected.
