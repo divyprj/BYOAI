@@ -110,7 +110,7 @@ echo.
 if "!DEVICE_CHOICE!"=="2" (
     echo [3/4] Waiting for ML model to load on GPU...
 ) else (
-    echo [3/4] Waiting for ML model to load (this takes ~3 minutes on first run)...
+    echo [3/4] Waiting for ML model to load - this takes about 3 minutes on first run...
 )
 echo.
 set ATTEMPTS=0
@@ -131,7 +131,7 @@ if !ATTEMPTS! gtr 60 (
 :: Check if gateway health endpoint responds
 powershell -NoProfile -Command "try { $r = Invoke-WebRequest -Uri 'http://localhost:8000/health' -UseBasicParsing -TimeoutSec 3 -ErrorAction Stop; exit 0 } catch { exit 1 }" >nul 2>&1
 if !errorlevel! neq 0 (
-    echo  Waiting... [!ATTEMPTS!/60] ^(checking every 5 seconds^)
+    echo  Waiting... [!ATTEMPTS!/60] - checking every 5 seconds
     timeout /t 5 /nobreak >nul
     goto wait_loop
 )
