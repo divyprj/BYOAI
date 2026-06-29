@@ -90,10 +90,10 @@ echo.
 
 if "!DEVICE_CHOICE!"=="2" (
     echo  Mode: NVIDIA GPU
-    docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d --build
+    docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d
 ) else (
     echo  Mode: CPU
-    docker compose up -d --build
+    docker compose up -d
 )
 
 if !errorlevel! neq 0 (
