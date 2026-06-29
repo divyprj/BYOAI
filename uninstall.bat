@@ -41,7 +41,9 @@ echo.
 
 :: Remove volumes
 echo [3/4] Removing Docker volumes (model cache, mlflow data)...
+docker volume rm byoai_model-cache 2>nul
 docker volume rm byoi_model-cache 2>nul
+docker volume rm byoai_mlflow-data 2>nul
 docker volume rm byoi_mlflow-data 2>nul
 echo  [OK] Volumes removed.
 echo.
