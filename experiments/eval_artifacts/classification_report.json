@@ -1,0 +1,75 @@
+{
+  "booking": {
+    "precision": 0.8947368421052632,
+    "recall": 0.85,
+    "f1-score": 0.8717948717948718,
+    "support": 20.0
+  },
+  "cancel": {
+    "precision": 0.8571428571428571,
+    "recall": 0.9,
+    "f1-score": 0.8780487804878049,
+    "support": 20.0
+  },
+  "complaint": {
+    "precision": 0.8421052631578947,
+    "recall": 0.8,
+    "f1-score": 0.8205128205128205,
+    "support": 20.0
+  },
+  "farewell": {
+    "precision": 0.8947368421052632,
+    "recall": 0.85,
+    "f1-score": 0.8717948717948718,
+    "support": 20.0
+  },
+  "feedback": {
+    "precision": 0.8947368421052632,
+    "recall": 0.85,
+    "f1-score": 0.8717948717948718,
+    "support": 20.0
+  },
+  "greeting": {
+    "precision": 0.9047619047619048,
+    "recall": 0.95,
+    "f1-score": 0.926829268292683,
+    "support": 20.0
+  },
+  "help": {
+    "precision": 0.85,
+    "recall": 0.85,
+    "f1-score": 0.85,
+    "support": 20.0
+  },
+  "out_of_scope": {
+    "precision": 0.85,
+    "recall": 0.85,
+    "f1-score": 0.85,
+    "support": 20.0
+  },
+  "question": {
+    "precision": 0.7272727272727273,
+    "recall": 0.8,
+    "f1-score": 0.7619047619047619,
+    "support": 20.0
+  },
+  "status_check": {
+    "precision": 0.9,
+    "recall": 0.9,
+    "f1-score": 0.9,
+    "support": 20.0
+  },
+  "accuracy": 0.86,
+  "macro avg": {
+    "precision": 0.8615493278651174,
+    "recall": 0.86,
+    "f1-score": 0.8602680246582685,
+    "support": 200.0
+  },
+  "weighted avg": {
+    "precision": 0.8615493278651175,
+    "recall": 0.86,
+    "f1-score": 0.8602680246582686,
+    "support": 200.0
+  }
+}

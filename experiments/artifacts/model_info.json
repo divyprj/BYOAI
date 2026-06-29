@@ -1,0 +1,6 @@
+{
+  "model_name": "distilbert-base-uncased",
+  "num_labels": 10,
+  "status": "simulated",
+  "best_f1": 0.8755
+}
