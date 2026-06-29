@@ -1,4 +1,5 @@
 @echo off
+setlocal enabledelayedexpansion
 title BYOAI - Repair
 color 0E
 
@@ -17,7 +18,7 @@ echo.
 
 :: Check Docker
 docker info >nul 2>&1
-if %errorlevel% neq 0 (
+if !errorlevel! neq 0 (
     color 0C
     echo  [ERROR] Docker Desktop is not running!
     echo  Please start Docker Desktop and try again.
@@ -26,14 +27,16 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-:: Stop everything
+:: Stop everything (both CPU and GPU compose files)
 echo [1/4] Stopping all services...
-docker compose down --remove-orphans
+docker compose -f docker-compose.yml -f docker-compose.gpu.yml down --remove-orphans 2>nul
+docker compose down --remove-orphans 2>nul
 echo  [OK] Services stopped.
 echo.
 
 :: Remove old images
 echo [2/4] Removing old images...
+docker compose -f docker-compose.yml -f docker-compose.gpu.yml down --rmi local --volumes 2>nul
 docker compose down --rmi local --volumes 2>nul
 echo  [OK] Old images removed.
 echo.
@@ -42,7 +45,7 @@ echo.
 echo [3/4] Rebuilding all images (no cache)...
 echo.
 docker compose build --no-cache
-if %errorlevel% neq 0 (
+if !errorlevel! neq 0 (
     color 0C
     echo.
     echo  [ERROR] Build failed! Check the errors above.
@@ -58,3 +61,4 @@ echo.
 echo [4/4] Starting services...
 echo.
 call run.bat
+endlocal

@@ -1,0 +1,23 @@
+# ============================================================
+# BYOAI - GPU Override for Docker Compose
+# Usage: docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d
+# ============================================================
+
+services:
+  ml-service:
+    build:
+      context: ./ml_service
+      dockerfile: Dockerfile.gpu
+    environment:
+      - ML_MODEL_NAME=facebook/bart-large-mnli
+      - ML_DEVICE=cuda
+      - ML_LOG_LEVEL=INFO
+      - HF_HOME=/app/.cache/huggingface
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

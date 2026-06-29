@@ -1,0 +1,48 @@
+# ============================================================
+# BYOAI ML Service - GPU Dockerfile
+# Uses NVIDIA CUDA base image for GPU-accelerated inference
+# ============================================================
+
+FROM nvidia/cuda:12.6.3-runtime-ubuntu24.04
+
+# Install Python 3.11 and system dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        python3.11 python3.11-venv python3-pip curl && \
+    ln -sf /usr/bin/python3.11 /usr/bin/python3 && \
+    ln -sf /usr/bin/python3.11 /usr/bin/python && \
+    rm -rf /var/lib/apt/lists/*
+
+# Prevent Python from writing .pyc files and enable unbuffered logging
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    HF_HOME=/app/.cache/huggingface
+
+WORKDIR /app
+
+# Copy and install Python dependencies (GPU-enabled PyTorch)
+COPY requirements.gpu.txt .
+RUN pip install --no-cache-dir --break-system-packages --upgrade pip && \
+    pip install --no-cache-dir --break-system-packages -r requirements.gpu.txt
+
+# Copy application source code
+COPY app/ ./app/
+COPY tests/ ./tests/
+
+# Create non-root user for security
+RUN groupadd --gid 1001 appuser && \
+    useradd --uid 1001 --gid 1001 --create-home appuser && \
+    mkdir -p /app/.cache/huggingface && \
+    chown -R appuser:appuser /app
+
+USER appuser
+
+# Expose the service port
+EXPOSE 8001
+
+# Health check to verify the service is responsive
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8001/health || exit 1
+
+# Start the FastAPI application
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]
