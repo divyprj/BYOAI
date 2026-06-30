@@ -132,6 +132,7 @@ The project includes automation scripts that handle everything for you:
 | Script | Description |
 |--------|-------------|
 | **`run.bat`** | Full auto-start: pulls latest code from GitHub, starts Docker Desktop if not running, lets you choose CPU or GPU mode, builds & starts all containers, waits for health checks, and opens all browser UIs |
+| **`stop.bat`** | Gracefully stops all running containers, verifies shutdown, force-removes any stragglers |
 | **`install.bat`** | Verifies Docker & Docker Compose are installed, builds all Docker images from scratch |
 | **`repair.bat`** | Stops everything, removes old images/volumes, rebuilds from scratch with `--no-cache`, then restarts |
 | **`uninstall.bat`** | Full cleanup: stops containers, removes images, deletes volumes (model cache, mlflow data), prunes dangling resources |
@@ -548,6 +549,7 @@ BYOAI/
 ├── .gitignore                       # Git ignore rules
 │
 ├── run.bat                          # One-click start (auto Docker, GPU/CPU, browser)
+├── stop.bat                         # Graceful shutdown of all services
 ├── install.bat                      # Build all Docker images
 ├── repair.bat                       # Full rebuild (no-cache)
 ├── uninstall.bat                    # Complete cleanup
