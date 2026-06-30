@@ -677,7 +677,7 @@ BYOAI/
 
 ## 🎬 Video Walkthrough
 
-> _A video walkthrough demonstrating the full system is available at: **[Coming Soon]**_
+> _A video walkthrough demonstrating the full system is available at: **[YouTube Video Walkthrough](https://youtu.be/QnZ-0SoQ_fw)**_
 
 ### Demo Talking Points
 
