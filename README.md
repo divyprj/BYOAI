@@ -16,8 +16,17 @@
 
 ---
 
+## 🎥 Demo Video
+
+[![Watch Demo Video](https://img.shields.io/badge/YOUTUBE-WATCH%20DEMO%20VIDEO-red?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/QnZ-0SoQ_fw)
+
+Watch the complete walkthrough demonstrating the system setup, CPU and GPU inference comparison, live endpoint testing in Swagger UI, and MLflow integration.
+
+---
+
 ## 📋 Table of Contents
 
+- [Demo Video](#-demo-video)
 - [Overview](#-overview)
 - [Architecture](#-architecture)
 - [Tech Stack](#-tech-stack)
@@ -30,7 +39,6 @@
 - [Project Structure](#-project-structure)
 - [Design Decisions & Trade-offs](#-design-decisions--trade-offs)
 - [Future Improvements](#-future-improvements)
-- [Video Walkthrough](#-video-walkthrough)
 - [License](#-license)
 
 ---
@@ -672,47 +680,6 @@ BYOAI/
 - [ ] **Response Caching** - Redis-based caching for identical queries
 - [ ] **Multi-language Support** - Multilingual intent classification models
 - [ ] **Frontend UI** - React/Next.js chat interface
-
----
-
-## 🎬 Video Walkthrough
-
-> _A video walkthrough demonstrating the full system is available at: **[YouTube Video Walkthrough](https://youtu.be/QnZ-0SoQ_fw)**_
-
-### Demo Talking Points
-
-1. **Architecture Overview** - Show the `docker-compose.yml` and explain the 3-service design
-2. **One-Command Deploy** - Run `docker compose up --build` and watch services come online
-3. **Health Checks** - Demonstrate health and readiness endpoints
-4. **Live Chat Demo** - Send various messages (greeting, complaint, booking) and show intent classification
-5. **Conversation History** - Show session management with history retrieval and clearing
-6. **Swagger UI** - Walk through the auto-generated API documentation at `/docs`
-7. **MLflow Dashboard** - Show experiment tracking at `localhost:5000`
-8. **Data Pipeline** - Run preprocessing and demonstrate the fine-tuning workflow
-9. **Code Walkthrough** - Highlight key architectural patterns (circuit breaker, rate limiter, zero-shot pipeline)
-10. **Future Roadmap** - Discuss production scaling with Kubernetes, GPU support, and CI/CD
-
-### Quick Demo Commands
-
-```bash
-# Start everything
-docker compose up --build -d
-
-# Wait for services to be healthy
-docker compose ps
-
-# Run the demo script
-bash scripts/demo.sh
-
-# Run integration tests
-python scripts/test_api.py
-
-# View MLflow UI
-open http://localhost:5000
-
-# Tear down
-docker compose down -v
-```
 
 ---
 
